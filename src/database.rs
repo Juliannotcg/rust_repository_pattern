@@ -1,9 +1,4 @@
-use cdbc::{Executor, impl_scan};
 use cdbc_mssql::MssqlPool;
-use std::sync::{Arc, Mutex};
-
-use crate::services::service::Service;
-use crate::services::user_service::UserService;
 
 pub struct Database {
     pub connection:  cdbc::Pool<cdbc_mssql::Mssql>,
@@ -12,17 +7,10 @@ pub struct Database {
 impl Database {
     
     pub fn new() -> Self {
-        let connection = MssqlPool::connect("hmlsql.webmotors.cloud://user_carros:user_carros@hmlsql.webmotors.cloud/DB_WebMotors")?;
+
+        let value = MssqlPool::connect("mssql://SA:TestPass!123456@localhost:1433/test");
+        let connection = value.unwrap();
+
         Self { connection }
     }
 }
-
-#[cfg(test)]
-mod test {
-    use super::*;
-
-    #[test]
-    fn test_database_new() {
-        Database::new();
-    }
-}  

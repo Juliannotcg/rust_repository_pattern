@@ -6,6 +6,7 @@ pub struct UserFactory {
 }
 
 impl UserFactory {
+
     pub fn new() -> Self {
         Self { id_generator: Id::new() }
     }
@@ -14,8 +15,6 @@ impl UserFactory {
         User::new(
            self.id_generator.generate(),
             name.to_string(),
-            0,
-            0,
         )
     }
 }
