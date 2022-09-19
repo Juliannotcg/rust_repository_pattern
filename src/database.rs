@@ -15,10 +15,6 @@ pub struct Database {
 impl Database {
     
     pub fn new() -> Self {
-
-         let data = fs::read_to_string("./appsettings.json")
-        .expect("Unable to read file");
-
         let connection_string = get_connection_string();
 
         let value = MssqlPool::connect(&connection_string);
