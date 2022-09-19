@@ -7,17 +7,21 @@ pub mod id;
 
 use crate::database::Database;
 use crate::factories::user_factory::UserFactory;
-use crate::services::service::Service;
+use crate::services::user_service::UserService;
+
 
 fn main() {
     
     let mut db = Database::new();
-
     let mut user_factory = UserFactory::new();
+
+    let mut user_factory = UserService::add();
+
+    
 
     let user = user_factory.create("ddjerqq");
 
-    db.users.add(&user).unwrap();
+    db.add(&user).unwrap();
 
 
     print!("{}", user.name);

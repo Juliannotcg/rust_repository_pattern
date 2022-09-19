@@ -6,7 +6,7 @@ pub trait Repository<TEntity>
 where TEntity: Model
 {
     /// create a new repository with the connection
-    fn new(connection: Arc<Mutex<rusqlite::Connection>>) -> Self;
+    fn new() -> Self;
 
     /// save the changes, commit the transaction with this.
     fn save_changes(&mut self)            -> Result<(), String>;

@@ -1,4 +1,3 @@
-use rusqlite::Row;
 
 use crate::models::model::Model;
 
@@ -27,6 +26,7 @@ impl PartialEq for User {
 }
 
 impl Model for User {
+    
     fn from_row(row: &Row) -> Result<Self, String> where Self: Sized {
         let id = row.get(0).map_err(|e| e.to_string())?;
         let name = row.get(1).map_err(|e| e.to_string())?;

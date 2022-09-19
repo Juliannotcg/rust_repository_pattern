@@ -1,24 +1,25 @@
-use std::borrow::BorrowMut;
 use std::sync::{Arc, Mutex};
 
-use rusqlite;
-use rusqlite::{Connection, params};
 
+use crate::database::Database;
 use crate::models::model::Model;
 use crate::models::user::User;
 pub use crate::repositories::repository::Repository;
+use cdbc::crud::CRUD;
 
 pub struct UserRepository {
-    connection: Arc<Mutex<Connection>>,
+    db: Database,
 }
 
 impl Repository<User> for UserRepository {
-    fn new(connection: Arc<Mutex<Connection>>) -> Self {
-        Self { connection }
+    
+    fn new() -> Self {
+        let db = Database::new();
+        Self { db }
     }
 
     fn save_changes(&mut self) -> Result<(), String> {
-        self.connection
+        self.db
             .lock()
             .map_err(|e| e.to_string())?
             .borrow_mut()
@@ -75,20 +76,20 @@ impl Repository<User> for UserRepository {
     }
 
     fn add(&mut self, entity: &User) -> Result<(), String> {
-        self.connection
-            .lock()
-            .map_err(|e| e.to_string())?
-            .borrow_mut()
-            .execute("INSERT INTO Users(id, name, wallet, bank)
-                     VALUES(?1, ?2, ?3, ?4)",
-                     params![entity.id(), entity.name, entity.wallet, entity.bank])
-            .map_err(|e| e.to_string())?;
+
+        let pool = self.db.connection;
+
+        CRUD::insert(&pool, entity.clone());
+
+
+
 
         Ok(())
     }
 
     fn update(&mut self, entity: &User) -> Result<(), String> {
-        self.connection
+        
+        self.db.connection.exe
             .lock()
             .map_err(|e| e.to_string())?
             .borrow_mut()

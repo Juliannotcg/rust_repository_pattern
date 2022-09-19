@@ -1,6 +1,5 @@
 use std::sync::{Arc, Mutex};
 
-use rusqlite::Connection;
 
 use crate::models::user::User;
 use crate::repositories::repository::Repository;
@@ -12,6 +11,7 @@ pub struct UserService {
 }
 
 impl Service<User> for UserService {
+
     fn new(connection: Arc<Mutex<Connection>>) -> Self {
         let user_repo = UserRepository::new(connection.clone());
 
@@ -31,8 +31,11 @@ impl Service<User> for UserService {
     }
 
     fn add(&mut self, entity: &User) -> Result<(), String> {
+
         self.users.add(entity)?;
         self.users.save_changes()?;
+
+        
         Ok(())
     }
 
