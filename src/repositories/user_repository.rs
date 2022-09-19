@@ -28,7 +28,7 @@ impl Repository<User> for UserRepository {
         let mut conn = pool.acquire().unwrap();
 
         let resultQuery = match conn.execute(query) {
-                Ok(file) => file,
+                Ok(success) => success,
                 Err(error) => panic!("Problem opening database: {:?}", error),
             };
 
