@@ -27,12 +27,11 @@ impl Repository<User> for UserRepository {
 
         let mut conn = pool.acquire().unwrap();
 
-        let resultQuery = match conn.execute(query) {
+        match conn.execute(query) {
                 Ok(success) => success,
                 Err(error) => panic!("Problem opening database: {:?}", error),
             };
 
-        print!("Linhas afetadas: {}", resultQuery.rows_affected());
 
         Ok(())
     }
