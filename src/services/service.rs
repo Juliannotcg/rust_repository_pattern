@@ -1,5 +1,3 @@
-use std::sync::{Arc, Mutex};
-
 pub trait Service<TEntity>
 {
     /// initialize a service with the connection

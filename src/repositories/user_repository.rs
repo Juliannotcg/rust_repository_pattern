@@ -1,5 +1,3 @@
-use std::sync::{Arc, Mutex};
-
 use crate::database::Database;
 use crate::models::user::User;
 pub use crate::repositories::repository::Repository;

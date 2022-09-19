@@ -23,7 +23,7 @@ fn main() {
     let result = user_service.add(&entity);
 
     match result {
-        Ok(success) => print!("Usuário {:?} salvo com sucesso!", &input),
+        Ok(_) => print!("Usuário {:?} salvo com sucesso!", &input),
         Err(error) => panic!("Error ao salvar usuário: {:?}", error),
     };
 }

@@ -1,6 +1,3 @@
-use std::sync::{Arc, Mutex};
-
-
 pub trait Repository<TEntity>
 {
     /// create a new repository with the connection
