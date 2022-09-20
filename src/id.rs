@@ -48,28 +48,3 @@ impl Id {
         }
     }
 }
-
-#[cfg(test)]
-mod tests {
-    use super::*;
-
-    const AMOUNT: usize = 10;
-    #[test]
-    fn does_not_repeat() {
-        let mut generator = Id::new();
-        let mut ids: [u64; AMOUNT] = [0; AMOUNT];
-        for i in 0..AMOUNT {
-            let id= generator.generate();
-            assert!(!ids.contains(&id));
-            ids[i] = id;
-            assert!(ids.contains(&id));
-        }
-    }
-
-    #[test]
-    fn created_at() {
-        let mut generator = Id::new();
-        let id = generator.generate();
-        assert_eq!(Id::get_timestamp(), Id::created_at(id))
-    }
-}

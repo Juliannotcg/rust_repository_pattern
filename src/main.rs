@@ -1,3 +1,12 @@
+#[macro_use]
+extern crate actix_web;
+
+use std::{env, io};
+
+use actix_web::{middleware, App, HttpServer};
+use controllers::user_controller;
+
+pub mod controllers;
 pub mod factories;
 pub mod models;
 pub mod repositories;
@@ -5,38 +14,22 @@ pub mod services;
 pub mod database;
 pub mod id;
 
-use crate::factories::user_factory::UserFactory;
-use crate::services::user_service::{UserService, Service};
-use value_input::get_input;
 
-fn main() {
+#[actix_rt::main]
+async fn main() -> io::Result<()> {
 
-    let mut user_factory = UserFactory::new();
+    env::set_var("RUST_LOG", "actix_web=debug,actix_server=info");
+    env_logger::init();
 
-    let input: String = get_input("Nome do novo usuário: ");
-
-
-    let entity = user_factory.create(&input);
-    
-    let mut user_service = UserService::new();
-
-    let result = user_service.add(&entity);
-
-    match result {
-        Ok(_) => print!("Usuário {:?} salvo com sucesso!", &input),
-        Err(error) => panic!("Error ao salvar usuário: {:?}", error),
-    };
+    HttpServer::new(|| {
+        App::new()
+            // enable logger - always register actix-web Logger middleware last
+            .wrap(middleware::Logger::default())
+            // register HTTP requests handlers
+            .service(user_controller::create)
+    })
+    .bind("0.0.0.0:9090")?
+    .run()
+    .await
 }
 
-mod value_input {
-    use std::io;
-    pub fn get_input(prompt: &str) -> String{
-        println!("{}",prompt);
-        let mut input = String::new();
-        match io::stdin().read_line(&mut input) {
-            Ok(_goes_into_input_above) => {},
-            Err(_no_updates_is_fine) => {},
-        }
-        input.trim().to_string()
-    }
-}
